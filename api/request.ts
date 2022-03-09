@@ -16,7 +16,7 @@ requestInstance.interceptors.request.use(
   (config: any) => config,
   (error: AxiosError) => {
     if (error.response?.status === 401) {
-      // TODO should redirect to homep age
+      // TODO should redirect to home page
       console.log("Not authorized");
     }
   }
