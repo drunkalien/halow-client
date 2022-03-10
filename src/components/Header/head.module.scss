@@ -1,0 +1,10 @@
+@import "~/styles/variables";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: $dark_blue;
+  padding: 5px 100px;
+  color: #fff;
+}
