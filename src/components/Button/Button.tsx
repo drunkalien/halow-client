@@ -1,18 +1,27 @@
-import { ReactNode } from "react";
+import { DetailedHTMLProps, ReactNode } from "react";
 import cn from "classnames";
 
 import classes from "./button.module.scss";
 
-type Props = {
-  type?: "primary" | "secondary";
+type Props = DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+> & {
+  variant?: "primary" | "secondary";
   rounded?: boolean;
   children: ReactNode;
 };
 
-const Button = ({ type = "primary", children, rounded = false }: Props) => {
+const Button = ({
+  variant = "primary",
+  children,
+  rounded = false,
+  ...props
+}: Props) => {
   return (
     <button
-      className={cn(classes.button, classes[type], {
+      {...props}
+      className={cn(classes.button, classes[variant], {
         [classes.round]: rounded,
       })}
     >
