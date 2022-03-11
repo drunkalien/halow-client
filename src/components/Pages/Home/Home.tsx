@@ -8,7 +8,7 @@ const Home = () => {
     <div className={cn(classes.home)}>
       <div className={cn(classes.buttons)}>
         <Button>Join meeting</Button>
-        <Button type="secondary">Create meeting</Button>
+        <Button variant="secondary">Create meeting</Button>
       </div>
     </div>
   );
