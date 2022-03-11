@@ -1,0 +1,13 @@
+.container {
+  height: calc(100vh - 65px);
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.heading {
+  font-weight: 500;
+  margin-bottom: 50px;
+}
