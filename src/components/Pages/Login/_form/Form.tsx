@@ -53,7 +53,9 @@ const Form = () => {
         </p>
       )}
 
-      <Button type="submit">Sign in</Button>
+      <Button type="submit" style={{ marginTop: "10px" }}>
+        Sign in
+      </Button>
     </form>
   );
 };

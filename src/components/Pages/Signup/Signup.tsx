@@ -6,7 +6,7 @@ import classes from "./signup.module.scss";
 const Signup = () => {
   return (
     <div className={cn(classes.container)}>
-      <h1 className={classes.heading}>Signup</h1>
+      <h1 className={classes.heading}>Sign up</h1>
       <Form />
     </div>
   );

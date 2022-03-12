@@ -98,7 +98,9 @@ const Form = () => {
         </p>
       )}
 
-      <Button type="submit">Sign Up</Button>
+      <Button type="submit" style={{ marginTop: "10px" }}>
+        Sign Up
+      </Button>
     </form>
   );
 };
