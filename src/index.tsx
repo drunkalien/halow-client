@@ -5,7 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { SignupPage, LoginPage, Layout } from "./components";
+import { SignupPage, LoginPage, Layout, JoinPage } from "./components";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +15,7 @@ ReactDOM.render(
           <Route path="/" element={<App />} />
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
+          <Route path="join" element={<JoinPage />} />
         </Routes>
       </BrowserRouter>
     </Layout>

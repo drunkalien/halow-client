@@ -4,4 +4,4 @@ export { default as Layout } from "./Layout";
 export { default as Input } from "./Input";
 
 // Pages
-export { HomePage, SignupPage, LoginPage } from "./Pages";
+export { HomePage, SignupPage, LoginPage, JoinPage } from "./Pages";
