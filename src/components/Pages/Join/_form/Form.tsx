@@ -28,7 +28,9 @@ const Form = () => {
       }}
     >
       <Input type="number" onChange={handleChange} />
-      <Button type="submit">Enter</Button>
+      <Button type="submit" style={{ marginTop: "5px" }}>
+        Enter
+      </Button>
     </form>
   );
 };
