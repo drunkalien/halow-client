@@ -7,7 +7,7 @@ type Props = DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 > & {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "danger";
   rounded?: boolean;
   children: ReactNode;
 };
@@ -22,7 +22,7 @@ const Button = ({
     <button
       {...props}
       className={cn(classes.button, classes[variant], {
-        [classes.round]: rounded,
+        [classes.rounded]: rounded,
       })}
     >
       {children}
