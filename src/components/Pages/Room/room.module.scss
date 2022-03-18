@@ -1,0 +1,65 @@
+@import "~/styles/variables";
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  position: absolute;
+  background-color: $pink;
+  border-radius: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 65px);
+}
+
+.participants-window {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: $dark_blue;
+  border-radius: 20px;
+  padding: 15px;
+  width: 50%;
+  margin-bottom: 20px;
+  height: 300px;
+  overflow: auto;
+}
+
+.peer {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background-color: #f8ebc9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.controls {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control {
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  background-color: $dark_blue;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
