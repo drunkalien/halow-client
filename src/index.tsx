@@ -5,7 +5,13 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { SignupPage, LoginPage, Layout, JoinPage } from "./components";
+import {
+  SignupPage,
+  LoginPage,
+  Layout,
+  JoinPage,
+  RoomPage,
+} from "./components";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,6 +22,7 @@ ReactDOM.render(
           <Route path="signup" element={<SignupPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="join" element={<JoinPage />} />
+          <Route path="room/:id" element={<RoomPage />} />
         </Routes>
       </BrowserRouter>
     </Layout>
