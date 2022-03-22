@@ -11,6 +11,7 @@ import {
   Layout,
   JoinPage,
   RoomPage,
+  ProfilePage,
 } from "./components";
 
 ReactDOM.render(
@@ -23,6 +24,7 @@ ReactDOM.render(
           <Route path="login" element={<LoginPage />} />
           <Route path="join" element={<JoinPage />} />
           <Route path="room/:id" element={<RoomPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </Layout>
