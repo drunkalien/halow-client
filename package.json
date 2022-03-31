@@ -52,5 +52,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/simple-peer": "^9.11.4"
+  }
 }

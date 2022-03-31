@@ -16,8 +16,8 @@ import {
 
 ReactDOM.render(
   <React.StrictMode>
-    <Layout>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Layout>
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="signup" element={<SignupPage />} />
@@ -26,8 +26,8 @@ ReactDOM.render(
           <Route path="room/:id" element={<RoomPage />} />
           <Route path="profile" element={<ProfilePage />} />
         </Routes>
-      </BrowserRouter>
-    </Layout>
+      </Layout>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
