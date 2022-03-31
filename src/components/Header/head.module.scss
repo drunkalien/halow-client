@@ -8,3 +8,13 @@
   padding: 15px 0;
   color: #fff;
 }
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile {
+  cursor: pointer;
+}
