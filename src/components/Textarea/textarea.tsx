@@ -3,7 +3,7 @@ import { HTMLProps, forwardRef } from "react";
 
 import classes from "./textarea.module.scss";
 
-type Props = HTMLProps<HTMLTextAreaElement>  & {
+type Props = HTMLProps<HTMLTextAreaElement> & {
   label?: string;
 };
 
