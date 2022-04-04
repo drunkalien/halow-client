@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 
-export const requestInstance = axios.create({
+const requestInstance = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
@@ -21,3 +21,5 @@ requestInstance.interceptors.request.use(
     }
   }
 );
+
+export default requestInstance;
