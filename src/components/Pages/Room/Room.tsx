@@ -7,6 +7,7 @@ import classes from "./room.module.scss";
 import { data } from "../../../dummy-data";
 
 import { Container, Button } from "../..";
+import { useLocation } from "react-router";
 
 type PeerType = {
   peerId: string;
@@ -20,6 +21,9 @@ const Room = () => {
   const socketRef: any = useRef();
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
+  const location = useLocation();
+  const roomId = location.pathname.split("room/")[1];
+  console.log(roomId, peers);
 
   useEffect(() => {
     socketRef.current = io("http://localhost:5000");

@@ -1,5 +1,5 @@
 import cn from "classnames";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Container } from "../";
 
 import { Logo } from "../Icons";
@@ -11,7 +11,9 @@ const Header = () => {
     <header className={cn(classes.header)}>
       <Container>
         <div className={cn(classes.container)}>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
           <p className={cn(classes.profile)} onClick={() => history("profile")}>
             username
           </p>

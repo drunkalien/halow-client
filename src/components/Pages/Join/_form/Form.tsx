@@ -3,9 +3,11 @@ import cn from "classnames";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
+import { useNavigate } from "react-router";
 
 const Form = () => {
   const [roomNumber, setRoomNumber] = useState(null);
+  const navigate = useNavigate();
 
   function handleChange(e: any) {
     setRoomNumber(e.target.value);
@@ -16,6 +18,7 @@ const Form = () => {
       return;
     }
 
+    navigate(`/room/${roomNumber}`);
     console.log(parseInt(roomNumber));
   }
 
