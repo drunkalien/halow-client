@@ -3,30 +3,12 @@ import ReactDOM from "react-dom";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import {
-  SignupPage,
-  LoginPage,
-  Layout,
-  JoinPage,
-  RoomPage,
-  ProfilePage,
-} from "./components";
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="signup" element={<SignupPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="join" element={<JoinPage />} />
-          <Route path="room/:id" element={<RoomPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-        </Routes>
-      </Layout>
+      <App />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

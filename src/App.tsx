@@ -1,11 +1,15 @@
 import "./App.css";
-import { HomePage } from "./components";
+import { useRoutes } from "react-router-dom";
+
+import { routes } from "./routes";
+import { Layout } from "./components";
 
 function App() {
+  const routing = useRoutes(routes);
   return (
-    <div className="App">
-      <HomePage />
-    </div>
+    <Layout>
+      <div className="App">{routing}</div>
+    </Layout>
   );
 }
 
