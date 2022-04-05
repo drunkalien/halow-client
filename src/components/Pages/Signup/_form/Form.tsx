@@ -5,6 +5,7 @@ import * as yup from "yup";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
+import { useAPIMutation } from "../../../../hooks";
 
 type FormValues = {
   username: string;
@@ -35,12 +36,14 @@ const Form = () => {
     resolver: yupResolver<any>(schema),
   });
 
+  const signupMutation = useAPIMutation({ url: "auth/signup" });
+
   if (errors) {
     console.log(errors);
   }
 
   function submit(data: FormValues) {
-    console.log(data);
+    signupMutation.mutateAsync(data);
   }
 
   return (
