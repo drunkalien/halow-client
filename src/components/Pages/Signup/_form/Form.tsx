@@ -42,8 +42,12 @@ const Form = () => {
     console.log(errors);
   }
 
-  function submit(data: FormValues) {
-    signupMutation.mutateAsync(data);
+  async function submit(data: FormValues) {
+    const mutation = await signupMutation.mutateAsync(data);
+
+    if (!signupMutation.isLoading) {
+      window.localStorage.setItem("token", mutation.data.data.token);
+    }
   }
 
   return (
