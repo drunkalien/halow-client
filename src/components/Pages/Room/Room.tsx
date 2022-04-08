@@ -8,6 +8,8 @@ import { data } from "../../../dummy-data";
 
 import { Container, Button } from "../..";
 import { useLocation } from "react-router";
+import { useWebsocket } from "../../../context";
+import { addPeer, createPeer } from "../../../features/peer";
 
 type PeerType = {
   peerId: string;
@@ -24,18 +26,18 @@ const Room = () => {
   const location = useLocation();
   const roomId = location.pathname.split("room/")[1];
   console.log(roomId, peers);
+  const socket = useWebsocket();
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:5000");
     navigator.mediaDevices
       .getUserMedia({ video: false, audio: true })
       .then((stream) => {
         userAudio.current = stream;
-        socketRef.current.emit("get-all-users", 100000);
-        socketRef.current.on("get-all-users", (users: PeerType[]) => {
+        socket?.emit("get-all-users", parseInt(roomId));
+        socket?.on("get-all-users", (users: PeerType[]) => {
           const peers: Peer.Instance[] = [];
           users.forEach(({ peerId }: PeerType) => {
-            const peer = createPeer(peerId, socketRef.current.id, stream);
+            const peer = createPeer(peerId, socket.id, stream, socket);
 
             peersRef.current.push({
               peerId: peerId,
@@ -47,47 +49,6 @@ const Room = () => {
         });
       });
   }, []);
-
-  function createPeer(
-    userToSIgnal: string,
-    callerId: string,
-    stream: MediaStream
-  ) {
-    const peer = new Peer({
-      initiator: true,
-      trickle: false,
-      stream,
-    });
-
-    peer.on("signal", (signal: any) => {
-      socketRef.current.emit("sending-signal", {
-        userToSIgnal,
-        callerId,
-        signal,
-      });
-    });
-
-    return peer;
-  }
-
-  function addPeer(
-    incomingSiganl: string,
-    callerId: string,
-    stream: MediaStream
-  ) {
-    const peer = new Peer({
-      initiator: false,
-      trickle: false,
-      stream,
-    });
-
-    peer.on("signal", (signal: any) => {
-      socketRef.current.emit("returning-signal", { signal, callerId });
-    });
-
-    peer.signal(incomingSiganl);
-    return peer;
-  }
 
   return (
     <Container>
