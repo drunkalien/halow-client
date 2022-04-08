@@ -23,7 +23,7 @@ const WebsocketProvider: FunctionComponent<{ children: ReactNode }> = ({
 
   useEffect(() => {
     try {
-      const socketConnection = io("http://localhost:5000", options);
+      const socketConnection = io("http://localhost:5001", options).connect();
       setConnection(socketConnection);
     } catch (err) {
       console.log(err);
