@@ -9,6 +9,7 @@ import { Container, Button } from "../..";
 import { useLocation } from "react-router";
 import { useWebsocket } from "../../../context";
 import { addPeer, createPeer } from "../../../features/peer";
+import { useAPIQuery } from "../../../hooks";
 
 type PeerType = {
   peerId: string;
@@ -17,33 +18,48 @@ type PeerType = {
   lastName: string;
 };
 
+const Audio = (props: any) => {
+  const ref = useRef();
+
+  useEffect(() => {
+    props.peer.on("stream", (stream: any) => {
+      ref.current = stream;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // @ts-ignore
+  return <audio ref={ref}></audio>;
+};
+
 const Room = () => {
   const [peers, setPeers] = useState<any[]>([]);
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
   const location = useLocation();
   const roomId = location.pathname.split("room/")[1];
-  console.log(roomId, peers);
   const socket = useWebsocket();
+  const query = useAPIQuery({
+    url: "user/current",
+    options: { refetchOnMount: false },
+  });
 
   useEffect(() => {
     navigator.mediaDevices
       .getUserMedia({ video: false, audio: true })
       .then((stream) => {
         userAudio.current = stream;
-        console.log("USER AUDIO", userAudio.current);
         socket?.emit("join-room", {
           roomId,
           peer: {
-            username: "khuja",
-            firstName: "Jamshidkhuja",
-            lastName: "Burikhujaev",
+            username: query.data.user.username,
+            firstName: query.data.user.firstName,
+            lastName: query.data.user.lastName,
             peerId: socket?.id,
           },
         });
         socket?.emit("get-all-users", parseInt(roomId));
         socket?.on("get-all-users", (users: PeerType[]) => {
-          console.log(users);
           const peers: Peer.Instance[] = [];
           users.forEach(({ peerId }: PeerType) => {
             const peer = createPeer(peerId, socket.id, stream, socket);
@@ -56,7 +72,27 @@ const Room = () => {
           });
           setPeers(peers);
         });
+        socket?.on("user-joined", (payload: any) => {
+          const peer = addPeer(
+            payload.signal,
+            payload.callerId,
+            stream,
+            socket
+          );
+          peersRef.current.push({
+            peerId: payload.callerId,
+            peer,
+          });
+
+          setPeers((users) => [...users, peer]);
+        });
+        socket?.on("receiving-returned-signal", (payload: any) => {
+          console.log("RETURNED SIGNAL", payload);
+          const item = peersRef.find((p: any) => p.peerId === payload.id);
+          item.peer.signal(payload.signal);
+        });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -87,6 +123,11 @@ const Room = () => {
             </Button>
           </div>
         </div>
+      </div>
+      <div style={{ width: "100px", height: "100px", backgroundColor: "blue" }}>
+        {peers.map((peer: any, idx: number) => (
+          <Audio peer={peer} key={idx}></Audio>
+        ))}
       </div>
     </Container>
   );
