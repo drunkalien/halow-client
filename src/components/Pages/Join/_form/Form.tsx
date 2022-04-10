@@ -25,10 +25,10 @@ const Form = () => {
     socket?.emit("join-room", {
       roomId: parseInt(roomNumber),
       peer: {
-        peerId: "asdf;jasdf",
-        username: "aaa",
-        firstName: "abcd",
-        lastName: "bcda",
+        peerId: socket?.id,
+        username: "Zieu",
+        firstName: "Ziyodulla",
+        lastName: "Muydinjanov",
       },
     });
   }

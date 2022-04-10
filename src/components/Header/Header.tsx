@@ -1,12 +1,13 @@
 import cn from "classnames";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Container } from "../";
+import { useAPIQuery } from "../../hooks";
 
 import { Logo } from "../Icons";
 import classes from "./head.module.scss";
 
 const Header = () => {
-  const history = useNavigate();
+  const query = useAPIQuery({ url: "user/current" });
   return (
     <header className={cn(classes.header)}>
       <Container>
@@ -14,9 +15,7 @@ const Header = () => {
           <Link to="/">
             <Logo />
           </Link>
-          <p className={cn(classes.profile)} onClick={() => history("profile")}>
-            username
-          </p>
+          {query.data && <p>{query.data.user.username}</p>}
         </div>
       </Container>
     </header>

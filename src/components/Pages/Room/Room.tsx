@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import { io } from "socket.io-client";
 import cn from "classnames";
 import Peer from "simple-peer";
 
@@ -20,7 +19,6 @@ type PeerType = {
 
 const Room = () => {
   const [peers, setPeers] = useState<any[]>([]);
-  const socketRef: any = useRef();
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
   const location = useLocation();
@@ -33,8 +31,19 @@ const Room = () => {
       .getUserMedia({ video: false, audio: true })
       .then((stream) => {
         userAudio.current = stream;
+        console.log("USER AUDIO", userAudio.current);
+        socket?.emit("join-room", {
+          roomId,
+          peer: {
+            username: "khuja",
+            firstName: "Jamshidkhuja",
+            lastName: "Burikhujaev",
+            peerId: socket?.id,
+          },
+        });
         socket?.emit("get-all-users", parseInt(roomId));
         socket?.on("get-all-users", (users: PeerType[]) => {
+          console.log(users);
           const peers: Peer.Instance[] = [];
           users.forEach(({ peerId }: PeerType) => {
             const peer = createPeer(peerId, socket.id, stream, socket);

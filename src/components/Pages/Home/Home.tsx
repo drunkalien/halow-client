@@ -1,14 +1,21 @@
 import cn from "classnames";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "../..";
 import { useWebsocket } from "../../../context";
+import { useAPIQuery } from "../../../hooks";
 import classes from "./home.module.scss";
 
 const Home = () => {
   const socket = useWebsocket();
-  socket?.on("create-room", (room: any) => {
-    console.log(room);
+  const query = useAPIQuery({ url: "user/current" });
+  const history = useNavigate();
+  if (!window.localStorage.getItem("token")) {
+    history("signup");
+  }
+
+  socket?.on("create-room", (roomId: number) => {
+    history(`room/${roomId}`);
   });
 
   return (
@@ -22,10 +29,7 @@ const Home = () => {
           onClick={() => {
             console.log("a");
             socket?.emit("create-room", {
-              peerId: "peerid",
-              username: "zieu",
-              firstName: "firstName",
-              lastName: "lastName",
+              username: query.data.user.username,
             });
           }}
         >
