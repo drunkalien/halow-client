@@ -2,7 +2,7 @@ import Peer from "simple-peer";
 import { Socket } from "socket.io-client";
 
 export function createPeer(
-  userToSIgnal: string,
+  userToSignal: string,
   callerId: string,
   stream: MediaStream,
   socket: Socket
@@ -13,9 +13,9 @@ export function createPeer(
     stream,
   });
 
-  peer.on("signal", (signal: any) => {
+  peer.on("signal", (signal: Peer.SignalData) => {
     socket.emit("sending-signal", {
-      userToSIgnal,
+      userToSignal,
       callerId,
       signal,
     });
@@ -36,7 +36,7 @@ export function addPeer(
     stream,
   });
 
-  peer.on("signal", (signal: any) => {
+  peer.on("signal", (signal: Peer.SignalData) => {
     socket.emit("returning-signal", { signal, callerId });
   });
 

@@ -22,8 +22,10 @@ const Audio = (props: any) => {
   const ref = useRef();
 
   useEffect(() => {
-    props.peer.on("stream", (stream: any) => {
+    props.peer.on("stream", (stream: MediaStream) => {
+      // @ts-ignore
       ref.current = stream;
+      console.log(stream);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -87,8 +89,9 @@ const Room = () => {
           setPeers((users) => [...users, peer]);
         });
         socket?.on("receiving-returned-signal", (payload: any) => {
-          console.log("RETURNED SIGNAL", payload);
-          const item = peersRef.find((p: any) => p.peerId === payload.id);
+          const item = peersRef.current.find(
+            (p: any) => p.peerId === payload.id
+          );
           item.peer.signal(payload.signal);
         });
       });

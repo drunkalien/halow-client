@@ -19,7 +19,6 @@ const Form = () => {
     }
 
     navigate(`/room/${roomNumber}`);
-    console.log(parseInt(roomNumber));
   }
 
   return (

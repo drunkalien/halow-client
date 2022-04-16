@@ -27,7 +27,6 @@ const Home = () => {
         <Button
           variant="secondary"
           onClick={() => {
-            console.log("a");
             socket?.emit("create-room", {
               username: query.data.user.username,
             });
