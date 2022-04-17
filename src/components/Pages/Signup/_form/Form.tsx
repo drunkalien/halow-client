@@ -2,6 +2,7 @@ import cn from "classnames";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
@@ -35,6 +36,7 @@ const Form = () => {
   } = useForm<FormValues>({
     resolver: yupResolver<any>(schema),
   });
+  const history = useNavigate();
 
   const signupMutation = useAPIMutation({ url: "auth/signup" });
 
@@ -45,8 +47,9 @@ const Form = () => {
   async function submit(data: FormValues) {
     const mutation = await signupMutation.mutateAsync(data);
 
-    if (!signupMutation.isLoading) {
+    if (!signupMutation.isLoading && !signupMutation.isError) {
       window.localStorage.setItem("token", mutation.data.data.token);
+      history("/");
     }
   }
 
