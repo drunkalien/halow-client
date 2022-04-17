@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 const requestInstance = axios.create({
-  baseURL: "https://halow-server.herokuapp.com/",
+  baseURL: "https://halow-server.herokuapp.com/api/v1/",
 });
 
 requestInstance.interceptors.request.use((config: any) => {
