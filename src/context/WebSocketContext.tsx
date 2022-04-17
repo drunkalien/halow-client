@@ -24,7 +24,7 @@ const WebsocketProvider: FunctionComponent<{ children: ReactNode }> = ({
   useEffect(() => {
     try {
       const socketConnection = io(
-        "ws://halow-server.herokuapp.com/",
+        "ws://halow-server.herokuapp.com:5001/",
         options
       ).connect();
       setConnection(socketConnection);
