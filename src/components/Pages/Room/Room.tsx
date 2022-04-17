@@ -24,14 +24,15 @@ const Audio = (props: any) => {
   useEffect(() => {
     props.peer.on("stream", (stream: MediaStream) => {
       // @ts-ignore
-      ref.current = stream;
-      console.log(stream);
+      ref.current.srcObject = stream;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // @ts-ignore
-  return <audio ref={ref}></audio>;
+  return (
+    // @ts-ignore
+    <audio autoPlay className={classes.video} ref={ref} />
+  );
 };
 
 const Room = () => {
@@ -47,56 +48,50 @@ const Room = () => {
   });
 
   useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ video: false, audio: true })
-      .then((stream) => {
-        userAudio.current = stream;
-        socket?.emit("join-room", {
-          roomId,
-          peer: {
-            username: query.data.user.username,
-            firstName: query.data.user.firstName,
-            lastName: query.data.user.lastName,
-            peerId: socket?.id,
-          },
-        });
-        socket?.emit("get-all-users", parseInt(roomId));
-        socket?.on("get-all-users", (users: PeerType[]) => {
-          const peers: Peer.Instance[] = [];
-          users.forEach(({ peerId }: PeerType) => {
-            const peer = createPeer(peerId, socket.id, stream, socket);
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+      if (userAudio.current) {
+        userAudio.current.srcObject = stream;
+      }
+      socket?.emit("join-room", {
+        roomId,
+        peer: {
+          username: query.data.user.username,
+          firstName: query.data.user.firstName,
+          lastName: query.data.user.lastName,
+          peerId: socket?.id,
+        },
+      });
+      socket?.emit("get-all-users", parseInt(roomId));
+      socket?.on("get-all-users", (users: PeerType[]) => {
+        const peers: Peer.Instance[] = [];
+        users.forEach(({ peerId }: PeerType) => {
+          const peer = createPeer(peerId, socket.id, stream, socket);
 
-            peersRef.current.push({
-              peerId: peerId,
-              peer,
-            });
-            peers.push(peer);
-          });
-          setPeers(peers);
-        });
-        socket?.on("user-joined", (payload: any) => {
-          const peer = addPeer(
-            payload.signal,
-            payload.callerId,
-            stream,
-            socket
-          );
           peersRef.current.push({
-            peerId: payload.callerId,
+            peerId: peerId,
             peer,
           });
-
-          setPeers((users) => [...users, peer]);
+          peers.push(peer);
         });
-        socket?.on("receiving-returned-signal", (payload: any) => {
-          const item = peersRef.current.find(
-            (p: any) => p.peerId === payload.id
-          );
-          item.peer.signal(payload.signal);
-        });
+        setPeers(peers);
       });
+      socket?.on("user-joined", (payload: any) => {
+        const peer = addPeer(payload.signal, payload.callerId, stream, socket);
+        peersRef.current.push({
+          peerId: payload.callerId,
+          peer,
+        });
+
+        setPeers((users) => [...users, peer]);
+      });
+      socket?.on("receiving-returned-signal", (payload: any) => {
+        const item = peersRef.current.find((p: any) => p.peerId === payload.id);
+        item.peer.signal(payload.signal);
+      });
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(peers);
 
   return (
     <Container>
