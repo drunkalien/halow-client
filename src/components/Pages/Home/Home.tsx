@@ -15,6 +15,7 @@ const Home = () => {
   }
 
   socket?.on("create-room", (roomId: number) => {
+    console.log("room created");
     history(`room/${roomId}`);
   });
 
