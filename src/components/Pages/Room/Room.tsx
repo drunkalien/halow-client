@@ -37,6 +37,7 @@ const Audio = (props: any) => {
 
 const Room = () => {
   const [peers, setPeers] = useState<any[]>([]);
+  const [mic, setMic] = useState();
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
   const location = useLocation();
@@ -48,7 +49,7 @@ const Room = () => {
   });
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+    navigator.mediaDevices.getUserMedia({ audio: mic }).then((stream) => {
       if (userAudio.current) {
         userAudio.current.srcObject = stream;
       }
@@ -111,7 +112,9 @@ const Room = () => {
         </div>
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>
-            <button className={cn(classes.control)}></button>
+            <button className={cn(classes.control)}>
+              {"Micdi o'chiradigan button :)"}
+            </button>
             <button className={cn(classes.control)}></button>
             <button className={cn(classes.control)}></button>
           </div>
