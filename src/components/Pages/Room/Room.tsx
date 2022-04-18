@@ -49,7 +49,7 @@ const Room = () => {
   });
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: mic }).then((stream) => {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       if (userAudio.current) {
         userAudio.current.srcObject = stream;
       }
@@ -115,8 +115,9 @@ const Room = () => {
             <button
               className={cn(classes.control)}
               onClick={() => setMic(!mic)}
+              style={{ color: "white" }}
             >
-              {"Micdi o'chiradigan button :)"}
+              {"Micni o'chiradigan button ishlamidi :)"}
             </button>
             <button className={cn(classes.control)}></button>
             <button className={cn(classes.control)}></button>
