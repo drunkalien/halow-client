@@ -37,7 +37,7 @@ const Audio = (props: any) => {
 
 const Room = () => {
   const [peers, setPeers] = useState<any[]>([]);
-  const [mic, setMic] = useState();
+  const [mic, setMic] = useState<boolean>(false);
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
   const location = useLocation();
@@ -112,7 +112,10 @@ const Room = () => {
         </div>
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>
-            <button className={cn(classes.control)}>
+            <button
+              className={cn(classes.control)}
+              onClick={() => setMic(!mic)}
+            >
               {"Micdi o'chiradigan button :)"}
             </button>
             <button className={cn(classes.control)}></button>
