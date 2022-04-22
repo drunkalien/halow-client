@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios";
 const requestInstance = axios.create({
   // baseURL: "https://halow-server.herokuapp.com/api/v1/",
   // baseURL: "http://localhost:5000/api/v1/",
-  baseURL: "https://deda-89-236-216-219.eu.ngrok.io/api/v1/",
+  baseURL: "https://f38c-185-139-137-13.eu.ngrok.io/api/v1/",
 });
 
 requestInstance.interceptors.request.use((config: any) => {
