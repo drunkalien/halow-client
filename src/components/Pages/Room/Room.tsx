@@ -43,13 +43,33 @@ const Room = () => {
   const location = useLocation();
   const roomId = location.pathname.split("room/")[1];
   const socket = useWebsocket();
+  const [userStream, setUserStream] = useState<MediaStream | null>(null);
   const query = useAPIQuery({
     url: "user/current",
     options: { refetchOnMount: false },
   });
 
+  function handleMicToggle() {
+    let audioTrack;
+    if (userStream) {
+      audioTrack = userStream
+        .getTracks()
+        .find((track) => track.kind === "audio");
+
+      if (userStream && audioTrack?.enabled) {
+        console.log("enabled");
+        audioTrack.enabled = false;
+      } else if (userStream && !audioTrack?.enabled) {
+        console.log("disabled");
+        // @ts-ignore
+        audioTrack.enabled = true;
+      }
+    }
+  }
+
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ audio: mic }).then((stream) => {
+      setUserStream(stream);
       if (userAudio.current) {
         userAudio.current.srcObject = stream;
       }
@@ -114,7 +134,7 @@ const Room = () => {
           <div className={cn(classes["left-controls"])}>
             <button
               className={cn(classes.control)}
-              onClick={() => setMic(!mic)}
+              onClick={handleMicToggle}
               style={{ color: "white" }}
             >
               {"Micni o'chiradigan button ishlamidi :)"}
