@@ -10,6 +10,7 @@ import { useLocation } from "react-router";
 import { useWebsocket } from "../../../context";
 import { addPeer, createPeer } from "../../../features/peer";
 import { useAPIQuery } from "../../../hooks";
+import { Mic } from "../../Icons";
 
 type PeerType = {
   peerId: string;
@@ -31,12 +32,13 @@ const Audio = (props: any) => {
 
   return (
     // @ts-ignore
-    <audio autoPlay className={classes.video} ref={ref} />
+    <audio autoPlay className={classes.audio} ref={ref} />
   );
 };
 
 const Room = () => {
   const [peers, setPeers] = useState<any[]>([]);
+  const [clients, setClients] = useState<any[]>([]);
   const [mic, setMic] = useState<boolean>(true);
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
@@ -51,6 +53,7 @@ const Room = () => {
 
   function handleMicToggle() {
     let audioTrack;
+    setMic(!mic);
     if (userStream) {
       audioTrack = userStream
         .getTracks()
@@ -68,7 +71,7 @@ const Room = () => {
   }
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: mic }).then((stream) => {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
       setUserStream(stream);
       if (userAudio.current) {
         userAudio.current.srcObject = stream;
@@ -84,6 +87,7 @@ const Room = () => {
       });
       socket?.emit("get-all-users", parseInt(roomId));
       socket?.on("get-all-users", (users: PeerType[]) => {
+        setClients(users);
         const peers: Peer.Instance[] = [];
         users.forEach(({ peerId }: PeerType) => {
           const peer = createPeer(peerId, socket.id, stream, socket);
@@ -118,7 +122,7 @@ const Room = () => {
     <Container>
       <div className={cn(classes["container"])}>
         <div className={cn(classes["participants-window"])}>
-          {data.map((peer, idx) => (
+          {clients.map((peer, idx) => (
             <div
               className={cn(classes.peer, {
                 [classes.host]: peer.isHost,
@@ -133,11 +137,13 @@ const Room = () => {
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>
             <button
-              className={cn(classes.control)}
+              className={cn(classes.control, {
+                [classes.disabled]: !mic,
+              })}
               onClick={handleMicToggle}
               style={{ color: "white" }}
             >
-              {"Micni o'chiradigan button ishlamidi :)"}
+              <Mic />
             </button>
             <button className={cn(classes.control)}></button>
             <button className={cn(classes.control)}></button>

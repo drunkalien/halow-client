@@ -30,7 +30,7 @@
   overflow: auto;
 }
 
-.peer {
+.video {
   width: 50px;
   height: 50px;
   border-radius: 10px;
@@ -55,6 +55,9 @@
 }
 
 .control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50px;
   height: 50px;
   margin: 0 5px;
@@ -64,8 +67,6 @@
   cursor: pointer;
 }
 
-.video {
-  width: 200px;
-  height: 200px;
-  border: 1px solid #000;
+.disabled {
+  background-color: $grey;
 }
