@@ -120,9 +120,11 @@ const Room = () => {
       socket?.on("user-left", (payload: { peerId: string }) => {
         const peerObj = peersRef.current.find(payload.peerId);
         peerObj.peer.destroy();
-        peersRef.current = peersRef.current.filter(
+        const peers = peersRef.current.filter(
           (peerObj: any) => peerObj.peerId !== payload.peerId
         );
+        peersRef.current = peers;
+        setPeers(peers);
       });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
