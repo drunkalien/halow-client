@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import cn from "classnames";
 import Peer from "simple-peer";
+import { useNavigate } from "react-router-dom";
 
 import classes from "./room.module.scss";
-import { data } from "../../../dummy-data";
 
 import { Container, Button } from "../..";
 import { useLocation } from "react-router";
@@ -46,6 +46,7 @@ const Room = () => {
   const roomId = location.pathname.split("room/")[1];
   const socket = useWebsocket();
   const [userStream, setUserStream] = useState<MediaStream | null>(null);
+  const history = useNavigate();
   const query = useAPIQuery({
     url: "user/current",
     options: { refetchOnMount: false },
@@ -60,14 +61,17 @@ const Room = () => {
         .find((track) => track.kind === "audio");
 
       if (userStream && audioTrack?.enabled) {
-        console.log("enabled");
         audioTrack.enabled = false;
       } else if (userStream && !audioTrack?.enabled) {
-        console.log("disabled");
         // @ts-ignore
         audioTrack.enabled = true;
       }
     }
+  }
+
+  function handleLeave() {
+    socket?.emit("leave", { roomId, peerId: socket.id });
+    history("/");
   }
 
   useEffect(() => {
@@ -113,10 +117,16 @@ const Room = () => {
         const item = peersRef.current.find((p: any) => p.peerId === payload.id);
         item.peer.signal(payload.signal);
       });
+      socket?.on("user-left", (payload: { peerId: string }) => {
+        const peerObj = peersRef.current.find(payload.peerId);
+        peerObj.peer.destroy();
+        peersRef.current = peersRef.current.filter(
+          (peerObj: any) => peerObj.peerId !== payload.peerId
+        );
+      });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(peers);
 
   return (
     <Container>
@@ -137,9 +147,7 @@ const Room = () => {
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>
             <button
-              className={cn(classes.control, {
-                [classes.disabled]: !mic,
-              })}
+              className={cn(classes.control)}
               onClick={handleMicToggle}
               style={{ color: "white" }}
             >
@@ -149,7 +157,7 @@ const Room = () => {
             <button className={cn(classes.control)}></button>
           </div>
           <div className={cn(classes["right-controls"])}>
-            <Button rounded variant="danger">
+            <Button rounded variant="danger" onClick={handleLeave}>
               Leave
             </Button>
           </div>
