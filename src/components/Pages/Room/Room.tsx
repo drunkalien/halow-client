@@ -92,15 +92,27 @@ const Room = () => {
       socket?.emit("get-all-users", parseInt(roomId));
       socket?.on("get-all-users", (users: PeerType[]) => {
         setClients(users);
-        const peers: Peer.Instance[] = [];
-        users.forEach(({ peerId }: PeerType) => {
+        const peers: {
+          username: string;
+          lastName: string;
+          firstName: string;
+          peerId: string;
+          peer: Peer.Instance;
+        }[] = [];
+        users.forEach(({ peerId, firstName, lastName, username }: PeerType) => {
           const peer = createPeer(peerId, socket.id, stream, socket);
 
           peersRef.current.push({
             peerId: peerId,
             peer,
           });
-          peers.push(peer);
+          peers.push({
+            username,
+            firstName,
+            lastName,
+            peerId,
+            peer,
+          });
         });
         setPeers(peers);
       });
@@ -166,8 +178,8 @@ const Room = () => {
         </div>
       </div>
       <div style={{ width: "100px", height: "100px", backgroundColor: "blue" }}>
-        {peers.map((peer: any, idx: number) => (
-          <Audio peer={peer} key={idx}></Audio>
+        {peers.map((peer: any) => (
+          <Audio peer={peer.peer} key={peer.peerId}></Audio>
         ))}
       </div>
     </Container>
