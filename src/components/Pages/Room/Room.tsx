@@ -11,6 +11,7 @@ import { useWebsocket } from "../../../context";
 import { addPeer, createPeer } from "../../../features/peer";
 import { useAPIQuery } from "../../../hooks";
 import { Mic } from "../../Icons";
+import Enabled from "../../Icons/EnabledMic";
 
 type PeerType = {
   peerId: string;
@@ -37,7 +38,15 @@ const Audio = (props: any) => {
 };
 
 const Room = () => {
-  const [peers, setPeers] = useState<any[]>([]);
+  const [peers, setPeers] = useState<
+    {
+      username: string;
+      lastName: string;
+      firstName: string;
+      peerId: string;
+      peer: Peer.Instance;
+    }[]
+  >([]);
   const [clients, setClients] = useState<any[]>([]);
   const [mic, setMic] = useState<boolean>(true);
   const userAudio: any = useRef();
@@ -123,7 +132,16 @@ const Room = () => {
           peer,
         });
 
-        setPeers((users) => [...users, peer]);
+        setPeers((users) => [
+          ...users,
+          {
+            username: "",
+            firstName: "",
+            lastName: "",
+            peerId: socket.id,
+            peer,
+          },
+        ]);
       });
       socket?.on("receiving-returned-signal", (payload: any) => {
         const item = peersRef.current.find((p: any) => p.peerId === payload.id);
@@ -141,6 +159,7 @@ const Room = () => {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(peers);
 
   return (
     <Container>
@@ -165,7 +184,7 @@ const Room = () => {
               onClick={handleMicToggle}
               style={{ color: "white" }}
             >
-              <Mic />
+              {mic ? <Enabled /> : <Mic />}
             </button>
             <button className={cn(classes.control)}></button>
             <button className={cn(classes.control)}></button>
@@ -178,8 +197,8 @@ const Room = () => {
         </div>
       </div>
       <div style={{ width: "100px", height: "100px", backgroundColor: "blue" }}>
-        {peers.map((peer: any) => (
-          <Audio peer={peer.peer} key={peer.peerId}></Audio>
+        {peers.map((p: any) => (
+          <Audio peer={p.peer} key={p.peerId}></Audio>
         ))}
       </div>
     </Container>
