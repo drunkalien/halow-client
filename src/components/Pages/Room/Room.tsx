@@ -148,7 +148,12 @@ const Room = () => {
         item.peer.signal(payload.signal);
       });
       socket?.on("user-left", (payload: { peerId: string }) => {
-        const peerObj = peersRef.current.find(payload.peerId);
+        console.log("PAYLOAD", socket.id, peersRef);
+
+        const peerObj = peersRef.current.find(
+          (p: any) => p.peerId === payload.peerId
+        );
+        console.log("USER LEFT", peerObj);
         peerObj.peer.destroy();
         const peers = peersRef.current.filter(
           (peerObj: any) => peerObj.peerId !== payload.peerId
@@ -201,6 +206,7 @@ const Room = () => {
           <Audio peer={p.peer} key={p.peerId}></Audio>
         ))}
       </div>
+      <Button onClick={() => console.log(peersRef.current)}>Log peers</Button>
     </Container>
   );
 };
