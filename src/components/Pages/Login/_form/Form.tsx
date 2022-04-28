@@ -5,6 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
+import { useAPIMutation } from "../../../../hooks";
+import { useNavigate } from "react-router";
 
 type FormValues = {
   username: string;
@@ -24,9 +26,15 @@ const Form = () => {
   } = useForm<FormValues>({
     resolver: yupResolver<any>(schema),
   });
+  const history = useNavigate();
+  const loginMutation = useAPIMutation({ url: "auth/login" });
 
-  function submit(data: FormValues) {
-    console.log(data);
+  async function submit(data: FormValues) {
+    const mutation = await loginMutation.mutateAsync(data);
+    if (!loginMutation.isLoading && !loginMutation.isError) {
+      window.localStorage.setItem("token", mutation.data?.data.token);
+      history("/");
+    }
   }
 
   return (
