@@ -2,11 +2,11 @@ import cn from "classnames";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
 import { useAPIMutation } from "../../../../hooks";
-import { useNavigate } from "react-router";
 
 type FormValues = {
   username: string;
@@ -49,7 +49,6 @@ const Form = () => {
           {errors.username.message}
         </p>
       )}
-
       <Input
         label="Password"
         {...register("password")}
@@ -60,7 +59,7 @@ const Form = () => {
           {errors.password.message}
         </p>
       )}
-
+      Don't have an account yet? <Link to="/signup">Sign Up</Link>
       <Button type="submit" style={{ marginTop: "10px" }}>
         Sign in
       </Button>

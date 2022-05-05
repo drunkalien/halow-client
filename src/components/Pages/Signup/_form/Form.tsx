@@ -2,7 +2,7 @@ import cn from "classnames";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { Input, Button } from "../../..";
 import classes from "./form.module.scss";
@@ -67,7 +67,6 @@ const Form = () => {
           {errors.username.message}
         </p>
       )}
-
       <Input
         label="First name"
         {...register("firstName")}
@@ -80,7 +79,6 @@ const Form = () => {
           {errors.firstName.message}
         </p>
       )}
-
       <Input
         label="Last name"
         {...register("lastName")}
@@ -93,7 +91,6 @@ const Form = () => {
           {errors.lastName.message}
         </p>
       )}
-
       <Input
         label="Password"
         type="password"
@@ -107,7 +104,7 @@ const Form = () => {
           {errors.password.message}
         </p>
       )}
-
+      Already have an account? <Link to="/login">Login</Link>
       <Button type="submit" style={{ marginTop: "10px" }}>
         Sign Up
       </Button>
