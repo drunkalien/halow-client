@@ -15,7 +15,9 @@ const Header = () => {
           <Link to="/">
             <Logo />
           </Link>
-          {query.data && <p>{query.data.user.username}</p>}
+          <Link to="/profile" className={classes.link}>
+            {query.data && <p>{query.data.user.username}</p>}
+          </Link>
         </div>
       </Container>
     </header>

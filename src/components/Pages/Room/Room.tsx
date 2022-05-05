@@ -170,17 +170,22 @@ const Room = () => {
     <Container>
       <div className={cn(classes["container"])}>
         <div className={cn(classes["participants-window"])}>
-          {clients.map((peer, idx) => (
-            <div
-              className={cn(classes.peer, {
-                [classes.host]: peer.isHost,
-              })}
-              key={idx}
-            >
-              {peer.firstName[0]}
-              {peer.lastName[0]}
-            </div>
-          ))}
+          {clients.length ? (
+            clients.map((peer, idx) => (
+              <div
+                title={peer.firstName + " " + peer.lastName}
+                className={cn(classes.peer, {
+                  [classes.host]: peer.isHost,
+                })}
+                key={idx}
+              >
+                {peer?.firstName[0]}
+                {peer?.lastName[0]}
+              </div>
+            ))
+          ) : (
+            <div className={classes.loading}>Loading...</div>
+          )}
         </div>
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>
@@ -191,8 +196,8 @@ const Room = () => {
             >
               {mic ? <Enabled /> : <Mic />}
             </button>
-            <button className={cn(classes.control)}></button>
-            <button className={cn(classes.control)}></button>
+            {/* <button className={cn(classes.control)}></button>
+            <button className={cn(classes.control)}></button> */}
           </div>
           <div className={cn(classes["right-controls"])}>
             <Button rounded variant="danger" onClick={handleLeave}>
@@ -201,12 +206,12 @@ const Room = () => {
           </div>
         </div>
       </div>
-      <div style={{ width: "100px", height: "100px", backgroundColor: "blue" }}>
+      <div>
         {peers.map((p: any) => (
           <Audio peer={p.peer} key={p.peerId}></Audio>
         ))}
       </div>
-      <Button onClick={() => console.log(peersRef.current)}>Log peers</Button>
+      {/* <Button onClick={() => console.log(peersRef.current)}>Log peers</Button> */}
     </Container>
   );
 };

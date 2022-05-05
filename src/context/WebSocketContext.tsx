@@ -25,8 +25,8 @@ const WebsocketProvider: FunctionComponent<{ children: ReactNode }> = ({
     try {
       const socketConnection = io(
         // "https://halow-server.herokuapp.com:5001/",
-        // "http://localhost:5001",
-        "https://0eeb-89-146-106-74.eu.ngrok.io/",
+        "http://localhost:5000",
+        // "https://0eeb-89-146-106-74.eu.ngrok.io/",
         options
       ).connect();
       setConnection(socketConnection);

@@ -1,12 +1,13 @@
 @import "~/styles/variables";
 
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
   position: absolute;
-  background-color: $pink;
+  background-color: $blue;
   border-radius: 10px;
 }
 
@@ -16,37 +17,53 @@
   justify-content: center;
   align-items: center;
   height: calc(100vh - 65px);
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+  }
 }
 
 .participants-window {
-  display: flex;
-  flex-wrap: wrap;
+  min-height: 250px;
+  max-height: 300px;
   background-color: $dark_blue;
   border-radius: 20px;
-  padding: 15px;
-  width: 50%;
+  width: 535px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
   margin-bottom: 20px;
-  height: 300px;
+  gap: 15px;
+  padding: 20px 15px;
   overflow: auto;
-}
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  align-items: flex-start;
+  justify-content: flex-start;
 
-.video {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  background-color: #f8ebc9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  font-weight: 700;
-  font-size: 20px;
+  .peer {
+    cursor: pointer;
+    min-width: 50px;
+    min-height: 50px;
+    max-height: 50px;
+    background: $blue;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
 }
 
 .controls {
-  width: 50%;
+  width: 535px;
   display: flex;
+  padding-top: 0;
   justify-content: space-between;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    bottom: 50px;
+    left: 0;
+  }
 }
 
 .left-controls {
@@ -69,4 +86,8 @@
 
 .disabled {
   background-color: $grey;
+}
+
+.loading {
+  color: white;
 }
