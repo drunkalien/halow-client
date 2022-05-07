@@ -47,7 +47,6 @@ const Room = () => {
       peer: Peer.Instance;
     }[]
   >([]);
-  const [clients, setClients] = useState<any[]>([]);
   const [mic, setMic] = useState<boolean>(true);
   const userAudio: any = useRef();
   const peersRef: any = useRef([]);
@@ -100,7 +99,6 @@ const Room = () => {
       });
       socket?.emit("get-all-users", parseInt(roomId));
       socket?.on("get-all-users", (users: PeerType[]) => {
-        setClients(users);
         const peers: {
           username: string;
           lastName: string;
@@ -109,7 +107,11 @@ const Room = () => {
           peer: Peer.Instance;
         }[] = [];
         users.forEach(({ peerId, firstName, lastName, username }: PeerType) => {
-          const peer = createPeer(peerId, socket.id, stream, socket);
+          const peer = createPeer(peerId, socket.id, stream, socket, {
+            username: query.data.user.username,
+            firstName: query.data.user.firstName,
+            lastName: query.data.user.lastName,
+          });
 
           peersRef.current.push({
             peerId: peerId,
@@ -135,9 +137,9 @@ const Room = () => {
         setPeers((users) => [
           ...users,
           {
-            username: "",
-            firstName: "",
-            lastName: "",
+            username: payload.user.username,
+            firstName: payload.user.firstName,
+            lastName: payload.user.lastName,
             peerId: socket.id,
             peer,
           },
@@ -170,22 +172,24 @@ const Room = () => {
     <Container>
       <div className={cn(classes["container"])}>
         <div className={cn(classes["participants-window"])}>
-          {clients.length ? (
-            clients.map((peer, idx) => (
-              <div
-                title={peer.firstName + " " + peer.lastName}
-                className={cn(classes.peer, {
-                  [classes.host]: peer.isHost,
-                })}
-                key={idx}
-              >
-                {peer?.firstName[0]}
-                {peer?.lastName[0]}
-              </div>
-            ))
-          ) : (
-            <div className={classes.loading}>Loading...</div>
-          )}
+          <div className={cn(classes.peer)}>
+            {query.data.user.firstName[0]}
+            {query.data.user.lastName[0]}
+          </div>
+          {peers.length
+            ? peers.map((peer, idx) => (
+                <div
+                  title={peer.firstName + " " + peer.lastName}
+                  className={cn(classes.peer, {
+                    // [classes.host]: peer.isHost,
+                  })}
+                  key={idx}
+                >
+                  {peer?.firstName[0]}
+                  {peer?.lastName[0]}
+                </div>
+              ))
+            : null}
         </div>
         <div className={cn(classes.controls)}>
           <div className={cn(classes["left-controls"])}>

@@ -5,7 +5,8 @@ export function createPeer(
   userToSignal: string,
   callerId: string,
   stream: MediaStream,
-  socket: Socket
+  socket: Socket,
+  currentUser: object
 ) {
   const peer = new Peer({
     initiator: true,
@@ -18,6 +19,7 @@ export function createPeer(
       userToSignal,
       callerId,
       signal,
+      currentUser,
     });
   });
 
