@@ -176,7 +176,7 @@ const Room = () => {
             {query.data.user.firstName[0]}
             {query.data.user.lastName[0]}
           </div>
-          {peers.length
+          {peers?.length
             ? peers.map((peer, idx) => (
                 <div
                   title={peer.firstName + " " + peer.lastName}
